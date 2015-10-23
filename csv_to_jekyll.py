@@ -34,19 +34,27 @@ for row_index, row in enumerate(datareader):
 
 		# Loop through each cell in this row...
 		for cell_index, cell in enumerate(row):
-
-			# Compile a line of YAML text from our headings list and the text of the current cell, followed by a linebreak.
-			# Heading text is converted to lowercase. Spaces are converted to underscores and hyphens are removed.
-			# In the cell text, line endings are replaced with commas.
-			cell_heading = data_headings[cell_index].lower().replace(" ", "_").replace("-", "_").replace("%", "percent").replace("$", "").replace(",", "")
-			cell_text = cell_heading + ": " + cell.replace("\n", ", ") + "\n"
-
-			# Add this line of text to the current YAML string.
-			yaml_text += cell_text
-
-		# Write our YAML string to the new text file and close it.
-		new_yaml.write(yaml_text + "---\n")
-		new_yaml.close()
+			# Check if on any but last cell of row
+			# If true, output the cell as front matter 
+			if cell_index < cell_index.length
+				# Compile a line of YAML text from our headings list and the text of the current cell, followed by a linebreak.
+				# Heading text is converted to lowercase. Spaces are converted to underscores and hyphens are removed.
+				# In the cell text, line endings are replaced with commas.
+				cell_heading = data_headings[cell_index].lower().replace(" ", "_").replace("-", "_").replace("%", "percent").replace("$", "").replace(",", "")
+				cell_text = cell_heading + ": " + cell.replace("\n", ", ") + "\n"
+	
+				# Add this line of text to the current YAML string.
+				yaml_text += cell_text
+			
+			# When on last cell of row, output ending YAML front matter marker
+			# Add the post/page content as the last line in the .md file
+			else:
+				cell_text = cell
+				yaml_text += "---\n" + cell_text
+				
+				# Write our YAML string to the new text file and close it.
+				new_yaml.write(yaml_text + "---\n")
+				new_yaml.close()
 
 # We're done! Close the CSV file.
 csvfile.close()
